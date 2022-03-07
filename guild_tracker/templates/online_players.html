@@ -11,7 +11,7 @@
         const copyToClipboard = element => {
             console.log(element)
             const el = document.createElement('textarea');
-            el.value = "exiva " + "\"" + element.children[0].textContent;
+            el.value = "exiva " + "\"" + element.children[1].textContent;
             el.setAttribute('readonly', '');
             el.style.position = 'absolute';
             el.style.left = '-9999px';
@@ -38,30 +38,31 @@
         <a class="btn btn-success" onClick="window.location.reload();" style="margin-left: 10px; margin-bottom: 10px;">Refresh</a>
     </div>
 
-    <div class="row">
+        {% for list in lists %}
         <div class="col align-self-center">
+            {% if list.online|length > 0 %}
+            <h3> {{list.name}} ({{list.online|length}})</h3>
                 <table class="table">
-                    <tr>
-                        <th> # </th>
-                        <th>Nome</th>
-                        <th>Level</th>
-                        <th>Vocação</th>
-                        <th>Lista</th>
-                        <th> </th>
-                    </tr>
-                    {%for player in players %}
-                    <tr onclick=copyToClipboard(this)>
-                        <td>{{forloop.counter}}</td>
-                        <td>{{player.name}}</td>
-                        <td>{{player.level}}</td>
-                        <td>{{player.vocation}}</td>
-                        <td>{{player.list.name}}</td>
-                    </tr>
-                    {%endfor%}
-                </table>
-        </div>
+                            <tr>
+                                <th> # </th>
+                                <th>Nome</th>
+                                <th>Level</th>
+                                <th>Vocação</th>
+                                <th> </th>
+                            </tr>
+                            {%for player in list.online %}
+                            <tr onclick=copyToClipboard(this)>
+                                <td>{{forloop.counter}}</td>
+                                <td>{{player.name}}</td>
+                                <td>{{player.level}}</td>
+                                <td>{{player.vocation}}</td> 
+                            </tr>
+                            {%endfor%}
+                        </table>
+                </div>
+            {%endif%}
+        {% endfor %}
         <hr />
-    </div>
 
 
     <footer>

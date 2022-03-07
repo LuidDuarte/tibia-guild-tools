@@ -14,18 +14,19 @@ class Guild(Timestamped):
         from .utils import online_players
         return online_players(self.name)
 
-    def update_online_with_priority(self):
-        default_list = self.lists.filter(default=True).first()
+    def sort_by_priority(self):
+        from .utils import get_dict_from_array
+        lists = [{'name': x.name, 'priority': x.priority, 'online': [], 'default': x.default} for x in self.lists.all()]
         online_members = self.online_members()
         for member in online_members:
             player_in_list = self.lists.filter(players__name__iexact=member.get('name'))
             if player_in_list.exists():
-                member.update({'list': player_in_list.first()})
+                get_dict_from_array(lists, 'name', player_in_list.name)['online'].append(member)
             else:
-                member.update({'list': default_list})
-        level_sorted = sorted(online_members, key=lambda x : x['level'], reverse=True)
-        priority_sorted = sorted(level_sorted, key=lambda x : x['list'].priority)
-        return priority_sorted
+                get_dict_from_array(lists, 'default', True)['online'].append(member)
+        for list in lists:
+            list.update({'online':  sorted(list['online'], key=lambda x : x['level'], reverse=True)})
+        return lists
 
 
 

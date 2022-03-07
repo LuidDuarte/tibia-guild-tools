@@ -13,3 +13,6 @@ def all_players(guild_name):
     r = requests.get(TIBIADATA_API+'guild/{}'.format(guild_name.replace(' ', '+')))
     members = r.json().get('guilds').get('guild').get('members')
     return members
+
+def get_dict_from_array(array, item, value):
+    return next(x for x in array if x[item] == value)
