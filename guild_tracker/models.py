@@ -19,9 +19,9 @@ class Guild(Timestamped):
         lists = [{'name': x.name, 'priority': x.priority, 'online': [], 'default': x.default} for x in self.lists.all()]
         online_members = self.online_members()
         for member in online_members:
-            player_in_list = self.lists.filter(players__name__iexact=member.get('name')).first()
+            player_in_list = self.lists.filter(players__name__iexact=member.get('name'))
             if player_in_list.exists():
-                get_dict_from_array(lists, 'name', player_in_list.name)['online'].append(member)
+                get_dict_from_array(lists, 'name', player_in_list.first().name)['online'].append(member)
             else:
                 get_dict_from_array(lists, 'default', True)['online'].append(member)
         for list in lists:
