@@ -19,7 +19,7 @@ class Guild(Timestamped):
         lists = [{'name': x.name, 'priority': x.priority, 'online': [], 'default': x.default} for x in self.lists.all()]
         online_members = self.online_members()
         for member in online_members:
-            player_in_list = self.lists.filter(players__name__iexact=member.get('name'))
+            player_in_list = self.lists.filter(players__name__iexact=member.get('name')).first()
             if player_in_list.exists():
                 get_dict_from_array(lists, 'name', player_in_list.name)['online'].append(member)
             else:
@@ -37,7 +37,7 @@ class PlayerList(Timestamped):
     guild = models.ForeignKey(Guild, on_delete=models.CASCADE, related_name='lists')
     name = models.CharField(max_length=10, null=False, blank=False)
     players = models.ManyToManyField('player.Player', related_name='lists', blank=True, null=True)
-    priority = models.PositiveSmallIntegerField(unique=True, help_text='0 is highest priority')
+    priority = models.PositiveSmallIntegerField(help_text='0 is highest priority')
     default = models.BooleanField(default=False)
 
     def __str__(self):
@@ -45,3 +45,4 @@ class PlayerList(Timestamped):
 
     class Meta:
         ordering = ('priority',)
+        unique_together = ('guild', 'priority', )
