@@ -37,7 +37,7 @@
     <div class="row justify-content-center">
         <a class="btn btn-success" onClick="window.location.reload();" style="margin-left: 10px; margin-bottom: 10px;">Refresh</a>
     </div>
-
+        <h1>Total Online: {{online}}</h1>
         {% for list in lists %}
         <div class="col align-self-center">
             {% if list.online|length > 0 %}

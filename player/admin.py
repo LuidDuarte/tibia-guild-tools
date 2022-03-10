@@ -1,8 +1,10 @@
 from django.contrib import admin
 from .models import Player
-from guild_tracker.admin import PlayerListInline
+from .actions import update_player_guild_membership
 
 
 @admin.register(Player)
 class PlayerAdmin(admin.ModelAdmin):
     readonly_fields = ('modified', )
+    list_display = ('name', 'member_of')
+    actions = [update_player_guild_membership]
