@@ -6,6 +6,7 @@ class Player(Timestamped):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=30)
     member_of = models.ForeignKey('guild_tracker.Guild', on_delete=models.SET_NULL, blank=True, null=True)
+    common_hunts = models.ManyToManyField('hunting_places.HuntingGround', related_name='players', blank=True, null=True)
 
     def __str__(self):
         return self.name

@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'behaviors.apps.BehaviorsConfig',
     'guild_tracker',
     'player',
+    'hunting_places',
 ]
 
 MIDDLEWARE = [

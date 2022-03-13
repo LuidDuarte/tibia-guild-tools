@@ -29,9 +29,6 @@ class Guild(Timestamped):
         return lists
 
 
-
-
-
 class PlayerList(Timestamped):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     guild = models.ForeignKey(Guild, on_delete=models.CASCADE, related_name='lists')
